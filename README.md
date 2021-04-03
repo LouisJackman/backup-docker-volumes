@@ -21,6 +21,9 @@ triggered manually with the dedicated command.
 
 ### Commands
 
+Of these commands, only the first one must be run manually. The others are best
+scheduled daily by installing the systemd service and timer.
+
 For the local backups directory, `/var/backups/docker-volumes` is a reasonable
 choice.
 
