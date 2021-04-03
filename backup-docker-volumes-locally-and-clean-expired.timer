@@ -1,0 +1,11 @@
+[Unit]
+Description=Backup Docker volumes locally and clean expired local backups
+Requires=backup-docker-volumes-and-clean-expired.service
+
+[Timer]
+Unit=backup-docker-volumes-and-clean-expired.service
+OnCalendar=Weekly
+
+[Install]
+WantedBy=timers.target
+
