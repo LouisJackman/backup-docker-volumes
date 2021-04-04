@@ -10,9 +10,9 @@ build:
 install: build
 	mkdir -p '$(DESTDIR)$(PREFIX)'
 	mkdir -p '$(DESTDIR)$(SYSTEMD)'
-	sed \
-	    -e "s|\$$\$${DESTDIR_PREFIX}|$$(readlink -f '$(DESTDIR)$(PREFIX)')|" \
-	    '$(SERVICE).service' \
+	m4 \
+	    -DDESTDIR_PREFIX="$$(readlink -f '$(DESTDIR)$(PREFIX)')" \
+	    '$(SERVICE).service.m4' \
 	    >'$(DESTDIR)$(SYSTEMD)/$(SERVICE).service'
 	cp '$(SERVICE).timer' '$(DESTDIR)$(SYSTEMD)'
 	mkdir -p '$(DESTDIR)$(PREFIX)/bin'

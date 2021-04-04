@@ -7,7 +7,7 @@ manually-invoked script for moving local backups onto an off-site location.
 
 Install with the usual `make && make install`, which will likely need `sudo`.
 
-It needs POSIX, Bash, systemd, and Docker.
+It needs POSIX (including m4), Bash, systemd, and Docker.
 
 ## Usage
 
