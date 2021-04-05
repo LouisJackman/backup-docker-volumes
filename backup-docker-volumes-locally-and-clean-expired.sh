@@ -18,6 +18,6 @@ else
 fi
 shift
 
-"$base_dir"/backup-docker-volumes-locally.sh "$local_backups_dir" "$@"
-"$base_dir"/remove-local-expired-docker-voume-backups.sh "$local_backups_dir"
+"$base_dir"/backup-docker-volumes-locally "$local_backups_dir" "$@"
+"$base_dir"/remove-local-expired-docker-volume-backups "$local_backups_dir"
 

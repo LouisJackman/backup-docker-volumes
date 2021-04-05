@@ -16,12 +16,19 @@ install: build
 	    >'$(DESTDIR)$(SYSTEMD)/$(SERVICE).service'
 	cp '$(SERVICE).timer' '$(DESTDIR)$(SYSTEMD)'
 	mkdir -p '$(DESTDIR)$(PREFIX)/bin'
+	chmod go+rx '$(DESTDIR)$(PREFIX)/bin'
 	cp backup-docker-volumes-locally-and-clean-expired.sh '$(DESTDIR)$(PREFIX)'/bin/backup-docker-volumes-locally-and-clean-expired
+	chmod go+rx '$(DESTDIR)$(PREFIX)'/bin/backup-docker-volumes-locally-and-clean-expired
 	cp backup-docker-volumes-locally.sh '$(DESTDIR)$(PREFIX)/bin/backup-docker-volumes-locally'
+	chmod go+rx '$(DESTDIR)$(PREFIX)/bin/backup-docker-volumes-locally'
 	cp move-local-docker-volume-backups-off-site.sh '$(DESTDIR)$(PREFIX)/bin/move-local-docker-volume-backups-off-site'
+	chmod go+rx '$(DESTDIR)$(PREFIX)/bin/move-local-docker-volume-backups-off-site'
 	cp remove-local-expired-docker-volume-backups.sh '$(DESTDIR)$(PREFIX)/bin/remove-local-expired-docker-volume-backups'
+	chmod go+rx '$(DESTDIR)$(PREFIX)/bin/remove-local-expired-docker-volume-backups'
 	mkdir -p '$(DESTDIR)$(PREFIX)/lib/$(SERVICE)'
+	chmod go+rx '$(DESTDIR)$(PREFIX)/lib/$(SERVICE)'
 	cp utils.sh '$(DESTDIR)$(PREFIX)/lib/$(SERVICE)'
+	chmod go+rx '$(DESTDIR)$(PREFIX)/lib/$(SERVICE)/utils.sh'
 
 uninstall:
 	rm '$(DESTDIR)$(SYSTEMD)/$(SERVICE).service'

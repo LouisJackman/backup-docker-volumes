@@ -22,28 +22,29 @@ readonly dest
 
 check() {
     check_not_root
-    check_not_world_readable "$default_src"
+    check_not_world_readable "$local_backups_dir"
 
-    if [[ ! -d $src ]]
+    if [[ ! -d $local_backups_dir ]]
     then
-        die "$src is not accessible"
+        die "$local_backups_dir is not accessible"
     fi
 
-    if [[ ! -d $dest ]]
+    if [[ ! -d $off_site_backups_dir ]]
     then
-        die "$dest is not accessible"
+        die "$off_site_backups_dir is not accessible"
     fi
 
-    if diff <(realpath "$src") <(realpath "$dest") >/dev/null
+    if diff <(realpath "$local_backups_dir") <(realpath "$off_site_backups_dir") >/dev/null
     then
-        die "$src and $dest should not overlap"
+        die "$local_backups_dir and $off_site_backups_dir should not overlap"
     fi
 }
 
 missing_in_dest() {
     diff \
-        <(ls "$src" | sort) \
-        <(ls "$dest" | sort) \
+        <(ls "$local_backups_dir" | sort) \
+        <(ls "$off_site_backups_dir" | sort) \
+	| tail +2 \
         | awk -F'< ' '{ print $2 }'
 }
 
@@ -53,7 +54,7 @@ copy_all() {
     do
         echo "$missing is missing; copying..."
         {
-            cp "$src/$missing" "$dest/$missing"
+            cp -R "$local_backups_dir/$missing" "$off_site_backups_dir/$missing"
             echo "Finished copying $missing"
         } &
     done
@@ -64,9 +65,9 @@ copy_all() {
 main() {
     check
 
-    echo "Copying missing backups from $src to $dest..."
+    echo "Copying missing backups from $local_backups_dir to $off_site_backups_dir..."
     missing_in_dest | copy_all
-    echo "Finished copying from $src to $dest."
+    echo "Finished copying from $local_backups_dir to $off_site_backups_dir."
 }
 
 main
