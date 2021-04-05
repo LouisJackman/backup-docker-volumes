@@ -7,13 +7,34 @@ manually-invoked script for moving local backups onto an off-site location.
 
 Install with the usual `make && make install`, which will likely need `sudo`.
 
-It needs POSIX (including m4), Bash, systemd, and Docker.
+It needs POSIX (including m4 for installation), Bash, systemd, and Docker.
+
+## Configuration
+
+To run automatically on a schedule, the provided values must be specified as
+environment variables:-
+
+- `BACKUP_DOCKER_VOLUMES_LOCAL_BACKUPS_DIR`
+- `BACKUP_DOCKER_VOLUMES_VOLUME_NAMES`
+
+Configure these using a systemd config override, which will likely need `sudo`:-
+
+```
+systemctl edit backup-docker-volumes
+```
+
+An example of such a configuration:-
+
+```systemd
+[Service]
+Environment="BACKUP_DOCKER_VOLUMES_LOCAL_BACKUPS_DIR=/var/backups/docker-volumes"
+Environment="BACKUP_DOCKER_VOLUMES_VOLUME_NAMES=docker-volume-1 docker-volume-2"
+```
 
 ## Usage
 
-Once installed, enable with `systemctl enable --now
-backup-docker-volumes-locally-and-clean-expired`. From then onwards, it will
-backup locally and delete expired backups daily.
+Once installed, enable with `systemctl enable --now backup-docker-volumes`. From
+then onwards, it will backup locally and delete expired backups daily.
 
 Some off-site backups have transient connectivity, e.g. to USB drives that are
 plugged in on-site and then moved off-site. As such, migrating those backups is

@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
 
 set -o errexit
+set -o errtrace
 set -o nounset
 set -o pipefail
+shopt -s inherit_errexit
 
-base_dir=$(dirname "$0")
+base_dir=$(dirname "$BASH_SOURCE")
 readonly base_dir
-. "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
+source "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
 
-if [ "$#" -eq 2 ]
+if [[ $# -eq 2 ]]
 then
-        local_backups_dir=$1
-        off_site_backups_dir=$2
+    local_backups_dir=$1
+    off_site_backups_dir=$2
 else
-        die "usage: $0 LOCAL_BACKUPS_DIR OFF_SITE_BACKUPS_DIR"
+    die "usage: $BASH_SOURCE LOCAL_BACKUPS_DIR OFF_SITE_BACKUPS_DIR"
 fi
-declare -r src
-declare -r dest
+readonly src
+readonly dest
 
 check() {
     check_not_root
@@ -51,7 +53,7 @@ copy_all() {
     do
         echo "$missing is missing; copying..."
         {
-            cp "$src/$missing" "$dest/$missing"
+            echo cp "$src/$missing" "$dest/$missing"
             echo "Finished copying $missing"
         } &
     done

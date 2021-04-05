@@ -1,13 +1,16 @@
 #!/usr/bin/env sh
 
 set -o errexit
+set -o errtrace
 set -o nounset
+set -o pipefail
+shopt -s inherit_errexit
 
-base_dir=$(dirname "$0")
+base_dir=$(dirname "$BASH_SOURCE")
 readonly base_dir
-. "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
+source "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
 
-if [ "$#" -eq 1 ]
+if [[ $# -eq 1 ]]
 then
     local_backups_dir=$1
 else
@@ -18,7 +21,7 @@ check() {
     check_not_root
     check_not_world_readable "$local_backups_dir"
 
-    if [ ! -d "$local_backups_dir" ]
+    if [[ ! -d $local_backups_dir ]]
     then
         die "$local_backups_dir"
     fi
@@ -35,7 +38,7 @@ rm_all() {
     while read expired
     do
         echo "Deleting expired backup $expired..."
-        rm "$expired"
+        echo rm "$expired"
     done
 
     wait

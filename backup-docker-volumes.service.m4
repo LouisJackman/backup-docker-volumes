@@ -1,9 +1,9 @@
 [Unit]
 Description=Backup Docker volumes locally and clean expired local backups
-Wants=local-fs.target multi-user.target backup-docker-volumes-locally-and-clean-expired-services.timer
+After=local-fs.target multi-user.target backup-docker-volumes-locally-and-clean-expired-services.timer
 
 [Service]
-ExecStart=DESTDIR_PREFIX/bin/backup-docker-volumes-locally-and-clean-expired.sh
+ExecStart=DESTDIR_PREFIX/bin/backup-docker-volumes-locally-and-clean-expired.sh ${BACKUP_DOCKER_VOLUMES_LOCAL_BACKUPS_DIR} $BACKUP_DOCKER_VOLUMES_VOLUME_NAMES
 Type=OneShot
 
 DynamicUser=true

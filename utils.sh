@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 die() {
     echo Error: "$@" >&2
@@ -18,7 +18,7 @@ check_not_root() {
     local euid
     euid=$(id -u)
 
-    if [ "$euid" -eq 0 ]
+    if [[ $euid -eq 0 ]]
     then
         die "should not be run under root; use systemd's sandboxed dynamic users, or a static, limited, and dedicated service account instead"
     fi

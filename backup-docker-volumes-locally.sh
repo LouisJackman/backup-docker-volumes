@@ -1,29 +1,32 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -o errexit
+set -o errtrace
 set -o nounset
+set -o pipefail
+shopt -s inherit_errexit
 
-base_dir=$(dirname "$0")
+base_dir=$(dirname "$BASH_SOURCE")
 readonly base_dir
-. "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
+source "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
 
-readonly docker_volumes_dir="/var/lib/docker/volumes"
+readonly docker_volumes_dir='/var/lib/docker/volumes'
 
-if [ 1 -le "$#" ]
+if [[ 1 -le $# ]]
 then
-	readonly local_backups_dir=$1
+	readonly local_backups_dir="$1"
 else
-	die "usage: $0 LOCAL_BACKUPS_DIR VOLUME_NAMES..."
+	die "usage: $BASH_SOURCE LOCAL_BACKUPS_DIR VOLUME_NAMES..."
 fi
 shift
 
-readonly volume_names="$*"
+readonly volume_names=("$@")
 
 check() {
     check_not_root
     check_not_world_readable "$local_backups_dir"
 
-    if [ ! -d "$docker_volumes_dir" ]
+    if [[ ! -d "$docker_volumes_dir" ]]
     then
         die "cannot access $docker_volumes_dir, likely due to a lack of permissions"
     fi
@@ -42,19 +45,21 @@ backup() {
 
     echo Starting backups...
 
-    for volume_name in $volume_names
+    local volume_name
+
+    for volume_name in "${volume_names[@]}"
     do
-        if [ ! -d "$docker_volumes_dir/$volume_name" ]
+        if [[ ! -d "$docker_volumes_dir/$volume_name" ]]
         then
             die "expected directory $docker_volumes_dir/$volume_name for $volume_name is not accessible; no volumes were copied"
         fi
     done
 
-    for volume_name in $volume_names
+    for volume_name in "${volume_names[@]}"
     do
         echo "Backing up $volume_name..."
         {
-            tar -Jcf "$dated_backup_dir/$volume_name".tar.xz "$docker_volumes_dir/$volume_name"
+            echo tar -Jcf "$dated_backup_dir/$volume_name".tar.xz "$docker_volumes_dir/$volume_name"
             echo "Finished backing up to $dated_backup_dir/$volume_name.tar.xz"
         } &
     done
