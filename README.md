@@ -1,6 +1,6 @@
 # Backup Docker Volumes
 
-Backup Docker volumes locally and cleanup old local backups daily. Provide a
+Backup Docker volumes locally and cleanup old local backups weekly. Provide a
 manually-invoked script for moving local backups onto an off-site location.
 
 ## Installation
@@ -34,7 +34,7 @@ Environment="BACKUP_DOCKER_VOLUMES_VOLUME_NAMES=docker-volume-1 docker-volume-2"
 ## Usage
 
 Once installed, enable with `systemctl enable --now backup-docker-volumes`. From
-then onwards, it will backup locally and delete expired backups daily.
+then onwards, it will backup locally and delete expired backups weekly.
 
 Some off-site backups have transient connectivity, e.g. to USB drives that are
 plugged in on-site and then moved off-site. As such, migrating those backups is
@@ -43,7 +43,7 @@ triggered manually with the dedicated command.
 ### Commands
 
 Of these commands, only the first one must be run manually. The others are best
-scheduled daily by installing the systemd service and timer.
+scheduled weekly by installing the systemd service and timer.
 
 For the local backups directory, `/var/backups/docker-volumes` is a reasonable
 choice.
