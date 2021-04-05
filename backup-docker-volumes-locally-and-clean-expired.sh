@@ -8,7 +8,7 @@ shopt -s inherit_errexit
 
 base_dir=$(dirname "$BASH_SOURCE")
 readonly base_dir
-source "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
+source "$base_dir/../lib/backup-docker-volumes/utils.sh"
 
 if [[ 1 -le $# ]]
 then

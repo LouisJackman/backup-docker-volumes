@@ -8,7 +8,7 @@ shopt -s inherit_errexit
 
 base_dir=$(dirname "$BASH_SOURCE")
 readonly base_dir
-source "$base_dir/../lib/backup-docker-volumes-locally-and-clean-expired/utils.sh"
+source "$base_dir/../lib/backup-docker-volumes/utils.sh"
 
 readonly docker_volumes_dir='/var/lib/docker/volumes'
 
@@ -59,7 +59,7 @@ backup() {
     do
         echo "Backing up $volume_name..."
         {
-            echo tar -Jcf "$dated_backup_dir/$volume_name".tar.xz "$docker_volumes_dir/$volume_name"
+            tar -Jcf "$dated_backup_dir/$volume_name".tar.xz "$docker_volumes_dir/$volume_name"
             echo "Finished backing up to $dated_backup_dir/$volume_name.tar.xz"
         } &
     done
