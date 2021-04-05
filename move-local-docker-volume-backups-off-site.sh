@@ -44,7 +44,7 @@ missing_in_dest() {
     diff \
         <(ls "$local_backups_dir" | sort) \
         <(ls "$off_site_backups_dir" | sort) \
-	| tail +2 \
+        | tail +2 \
         | awk -F'< ' '{ print $2 }'
 }
 
